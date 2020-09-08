@@ -1,0 +1,126 @@
+﻿先看如下 web.config 的代码：
+
+<system.web>
+    <compilation debug="true" targetFramework="4.0"/>
+    <httpRuntime requestValidationMode="2.0" />
+    <pages validateRequest="false"></pages>
+</system.web>
+validateRequest 这句我们知道是关闭验证，也就是说提交带标签，比如 <strong>粗体</strong> 这样的值时，ASP.NET 不会报错。
+
+但在 4.0 中还多了一个 requestValidationMode，这是什么意思呢？
+
+requestValidationMode 有两个值：
+
+2.0仅对网页启用请求验证。是启用还是关闭取决于 validateRequest。
+4.0 默认值。任何 HTTP 请求都会启用请求验证，也就是说不光是网页，还包括 Cookie 等。此时强制启用，不管 validateRequest 为何值。
+由于 requestValidationMode="4.0" 是强制启用，所以我们会发现在 .NET Framework 4.0 中仅靠设置 validateRequest 是关闭不了请求验证的，还得将 requestValidationMode 设置为 2.0。
+
+ 
+
+ASP.NET中的请求验证特性提供了某一等级的保护措施防止XSS攻击，之前版本的ASP.NET的请求验证是默认启动的,但是他紧紧应用于ASP.NET页面中(.aspx文件和.aspx.cs文件)。
+
+而在ASP.NET4中，请求验证默认对所有类型的请求启动，因为它在BeginRequest被调用之前启动,结果就是对所有资源的请求都要经过请求验证，而不仅仅在.aspx文件和他们的类文件中,甚至包括web service和自定义的httphandler。同样，在自定义httpmodules读取http请求的时候，同样要经过请求验证。
+
+上述原因引发的最终结果就是在ASP.NET4中会引发请求错误，例如检测到有潜在危险的Request.Form值等等，为了解决这个问题，可以通过将验证模式设置为ASP.NET之前的版本。具体步骤是在web.config中加入以下配置：
+
+<httpRuntime requestValidationMode=”2.0″ />
+
+设置了请求模式后，再设置
+
+<system.web>
+<pages validaterequest=”false”/>
+</system.web>
+
+ 
+
+MVC框架中，在控制方法前加入：
+
+[ValidateInput(false)]属性。
+
+ 
+
+ 
+
+那么就可以禁止请求验证了。但是这会引发安全问题，对安全问题的讨论请看这里：点击这里查看
+
+另外还有一种方法就是实现自己的请求验证类，首先需要在web.config中指定请求验证类类型：
+
+<httpRuntime requestValidationType=”Globals.CustomRequestValidation”/>
+
+然后实现自己的请求验证类，这个类必须从RequestValidator类中继承，具体代码如下：
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Util;
+namespace Globals
+{
+/// <summary>
+/// Summary description for CustomRequestValidation
+/// </summary>
+public class CustomRequestValidation : RequestValidator
+{
+public CustomRequestValidation() { }
+protected override bool IsValidRequestString(HttpContext context, string value, RequestValidationSource requestValidationSource, string collectionKey, outint validationFailureIndex)
+{
+//block script tags
+var idx = value.ToLower().IndexOf(“<script”);
+if (idx > -1)
+{
+validationFailureIndex = idx;
+return false;
+}
+else
+{
+validationFailureIndex = 0;
+return true;
+}
+}
+}
+}
+
+IsValidRequestString函数返回true则验证通过，否则验证失败，还会出现文章开头所说的错误消息。此请求验证类当检测到<script>标签时就会出现错误，防止脚本注入攻击等等。
+
+ ============================================
+
+ 
+
+DW与ACCESS连接字符串本地和远程
+
+ 一、在本地“浏览”调试网站时的连接方法
+　
+　　在 DW 或本地的 IIS 服务器下浏览、调试网站访问数据库时，自定义连接字符串中使用数据库的绝对路径，操作如下：
+　
+　　打开 DW，建好站点，打开所需网页，例如主页文件 index.asp，在弹出的“自定义连接字符串”对话框中“连接名称”栏填写自定义的名称（为了养成好的编程习惯，最好名称前加上 conn 前缀，表明这是一个数据库的连接名称，例如本来你想起的连接名称为 test，加上 conn 前缀后的连接名称为 conntest）。在“连接字符串”栏中填写：
+　
+　　"Driver={Microsoft Access Driver (*.mdb)};DBQ=你的数据库的绝对路径"
+　
+　　把本文开始处假定的具体参数代进去就是：
+　
+　　"Driver={Microsoft Access Driver (*.mdb)};DBQ=F:\try\data\aaa.mdb"
+　
+　　一定要注意：Driver 和 (*.mdb) 之间有个空格，不要写错了！写错了不能通过“测试”，当然也连接不上数据库。上面连接字符串两端的双引号在输入时可以省略，DW 会自动为你补上的。
+　
+　　在“Dreamweaver 应连接”项中，应选择“使用此计算机上的驱动程序”。填写完毕后，点击右边的[测试]按钮，如果操作没有问题的话，就会弹出“成功创建连接脚本”的信息牌。点击[确定]完成连接的创建。
+　
+　　此时回到 DW 的“应用程序”面板中的[数据库]，可以看到我们创建的数据库连接已经生效，并能查看数据库的结构和相关信息。
+　
+　　在数据库的数据表图标上单击右键，选择“查看数据”，可以查看到该数据表中的详细内容。
+　
+　　在“文件”面板中，我们可以看到 DW 自动生成了一个 Connections 的文件夹，其中包含了一个以我们刚才自定的连接名称 conntest 命名的 asp 文件，这个就是保存连接字符串的地方。之后的绑定记录集操作因不是本文主题，故略去。
+　
+　　到此，与数据库连接的网页在本地 IIS 服务器和 DW 下可以正常访问数据库进行“浏览”了，但不能保证你的网站上传到远程服务器的空间后也能正常。
+　
+　　二、让数据库的连接同时适应本地和远程服务器环境
+　
+　　我们在连接中使用了数据库的绝对路径 F:\try\data\aaa.mdb，而当我们把网站上传到远程服务器后，服务器上你的数据库的绝对路径可能和本地路径不一样，相关程序就会出错。为了避免这种情况，我们应在程序中使用相对路径。
+　
+　　在 DW 下双击打开连接文件（本文中是 conntest.asp），切换到[代码]编辑方式，找到其中的这一行：
+　
+　　MM_conntest_STRING = "Driver={Microsoft Access Driver (*.mdb)};DBQ=F:\try\data\aaa.mdb"
+　
+　　在这一行前加一个单引号“'”把它变成注释行，然后在下面新建一行，输入如下代码：
+　　　MM_conntest_STRING = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source="&Server.Mappath("data/aaa.mdb")
+　
+　　很多人也许会奇怪，为什么我们不在创建连接时就使用相对路径呢？其实这是有原因的。在 DW 中的连接字符串中只能使用绝对路径，而 DW 有个特点，就是检测连接文件（这里是 conntest.asp）时，会连注释（以单引号开头的行）一起解释、执行，在 DW 中“浏览”网页、执行数据库的连接时，只认第一个出现的连接字符串，而不管它前面是否有作为注释标记的单引号；而在远程 IIS 服务器中解释文件时会忽略掉注释（即绕过有注释标记的行），执行上面我们另加的第二个连接字符串。根据这个特点，我们就实现了在本地 IIS 服务器和 DW 下调试程序使用绝对路径，在远程服务器上浏览时使用相对路径定位数据库，使得网站与数据库的连接在网站存放地点不同的情况下能“自动”随机应变，畅通无阻。

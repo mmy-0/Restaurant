@@ -1,0 +1,45 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Admin.Master.cs" Inherits="HotelWeb.Admin.Admin"  %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>后台管理系统</title>
+    <link href="Styles/AdminCss.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div id="container">
+        <div id="top">
+        </div>
+        <div id="nav">
+            <div id="navlink">
+                <ul>
+                    <li><a href="/HotelWeb/Admin/Default.aspx">首页</a></li>
+                    <li><a href="/HotelWeb/Admin/Dishes/DishesPublish.aspx?Operation=0">添加菜品</a></li>
+                    <li><a href="/HotelWeb/Admin/Dishes/DishesManager.aspx">菜品管理</a></li>
+                    <li><a href="/HotelWeb/Admin/News/NewsPublish.aspx?Operation=0">发布新闻</a></li>
+                    <li><a href="/HotelWeb/Admin/News/NewsManager.aspx">新闻管理</a></li>
+                    <li><a href="/HotelWeb/Admin/Book/BookManager.aspx">预订管理</a></li>
+                    <li><a href="/HotelWeb/Admin/SuggestionList.aspx">投诉管理</a></li>
+                    <li><a href="/HotelWeb/Admin/Recruitment/RecruitmentPublish.aspx">发布招聘</a></li>
+                    <li><a href="/HotelWeb/Admin/Recruitment/RecruitmentManager.aspx">招聘管理</a></li>
+                    <li><a class="navLast" href="/HotelWeb/Admin/Handler/ExitSys.ashx">退出系统</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="content">
+            <asp:ContentPlaceHolder ID="cphMain" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <div id="footer">
+            <div id="bq">
+                <a target="_blank" href="~/HotelWeb/Admin/Default.aspx">[网站首页]</a>&nbsp;&nbsp;版权所有 Copyright(C)2010-2020
+                好运来酒店&nbsp;&nbsp;&nbsp;<asp:Literal ID="ltaAdmin" runat="server"></asp:Literal>
+            </div>
+        </div>
+    </div>
+    </form>
+</body>
+</html>

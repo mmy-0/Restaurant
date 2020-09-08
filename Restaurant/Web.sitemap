@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="" title="中式餐馆酒店"  description="">
+    <siteMapNode url="~/HotelWeb/CompanyInfo/CompanyDesc.aspx" title="公司简介"  description="" />
+    <siteMapNode url="~/HotelWeb/CompanyInfo/AboutUs.aspx" title="关于我们"  description="" />
+    <siteMapNode url="~/HotelWeb/CompanyNews/NewsList.aspx" title="新闻动态"  description=""/>
+    <siteMapNode url="~/HotelWeb/CompanyDishes/DishesSHow.aspx" title="美食展示"  description="" />
+    <siteMapNode url="~/HotelWeb/CompanyInfo/JoinUs.aspx" title="加盟方案"  description="" />
+    <siteMapNode url="~/HotelWeb/HotelWeb/CompanyInfo/Suggestion.aspx" title="投诉建议"  description="" />
+    <siteMapNode url="~/HotelWeb/CompanyDishes/Environment.aspx" title="餐厅环境"  description="" />
+    <siteMapNode url="~/HotelWeb/CompanyDishes/EnvironmentDetail.aspx" title="餐厅环境详细介绍"  description="" />
+    <siteMapNode url="~/HotelWeb/CompanyDishes/DishesBook.aspx" title="在线预订"  description="" />
+    <siteMapNode url="" title="新闻中心"  description="">
+      <siteMapNode url="~/HotelWeb/CompanyNews/NewsDetail.aspx" title="新闻详细内容"  description="" />
+    </siteMapNode>
+    <siteMapNode url="" title="招聘中心"  description="">
+      <siteMapNode url="~/HotelWeb/CompanyInfo/RecruitmentList.aspx" title="职位需求查询"  description="" />
+      <siteMapNode url="~/HotelWeb/CompanyInfo/RecruitmentDetail.aspx" title="职位详细信息"  description="" />
+    </siteMapNode>
+  </siteMapNode>
+
+</siteMap>
+

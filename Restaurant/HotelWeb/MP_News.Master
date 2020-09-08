@@ -1,0 +1,125 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MP_News.master.cs" Inherits="HotelWeb.MP_News" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title>杭州中式餐馆酒店</title>
+    <link href="../Styles/MainPage.css" rel="stylesheet" type="text/css" />
+    <link href="../Styles/MasterPage.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <script language="JavaScript" type="text/javascript">
+        var NowFrame = 1;
+        var MaxFrame = 2;
+        function scroll1(d1) {
+            if (Number(d1)) {
+                NowFrame = d1;                //设当前显示图片
+            }
+            for (var i = 1; i < (MaxFrame + 1); i++) {
+                if (NowFrame == i) {
+                    document.getElementById(NowFrame).style.display = 'block';   //当前显示图片
+                }
+                else {
+                    document.getElementById(i).style.display = 'none';
+                }
+            }
+            {
+                if (NowFrame == MaxFrame)   //设置下一个显示的图片
+                    NowFrame = 1;
+                else
+                    NowFrame++;
+            }
+            theTimer = setTimeout('scroll1()', 3000);   //设置定时器，显示下一张图片
+        }			
+    </script>
+</head>
+<body onload="scroll1(1)">
+    <form id="form1" runat="server">
+    <div id="container">
+        <div id="top">
+        </div>
+        <div id="nav">
+            <div id="navlink">
+                <ul>
+                    <li><a href="/HotelWeb/Default.aspx">首&nbsp;&nbsp;页</a></li>
+                    <li><a href="/HotelWeb/CompanyInfo/CompanyDesc.aspx">公司介绍</a></li>
+                    <li><a href="/HotelWeb/CompanyDishes/Environment.aspx">餐厅环境</a></li>
+                    <li><a href="/HotelWeb/CompanyNews/NewsList.aspx">新闻动态</a></li>
+                    <li><a href="/HotelWeb/CompanyDishes/DishesShow.aspx">美食展示</a></li>
+                    <li><a href="/HotelWeb/CompanyDishes/DishesBook.aspx">在线预订</a></li>
+                    <li><a href="/HotelWeb/CompanyInfo/Suggestion.aspx">投诉建议</a></li>
+                    <li><a href="/HotelWeb/CompanyInfo/RecruitmentList.aspx">招聘信息</a></li>
+                    <li><a href="/HotelWeb/CompanyInfo/JoinUs.aspx">加盟连锁</a></li>
+                    <li><a class="navLast" href="/HotelWeb/CompanyInfo/AboutUs.aspx">关于我们</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="topflashDiv">
+            <div id="topflashbg">
+                <img src="../Images/topflash1.jpg" id="1" alt="" style="display: none;" />
+                <img src="../Images/topflash2.jpg" id="2" alt="" style="display: none;" />
+            </div>
+        </div>
+        <div id="content">
+            <div id="leftpage">
+                <div class="lefttitle">
+                    栏目导航
+                </div>
+                <div class="content1">
+                    <div class="conitem">
+                        <a href="#">公司新闻</a>
+                    </div>
+                    <div class="conitem">
+                        <a href="#">行业动态</a>
+                    </div>
+                    <div class="conitem">
+                        <a href="#">促销信息</a>
+                    </div>
+                </div>
+                <%-- <div class="lefttitle">
+                    资讯搜索
+                </div>
+                <div class="content2">
+                    <div class="conitem2">
+                        <asp:DropDownList ID="DropDownList1" CssClass="conitem2txt" runat="server" Width="160px">
+                        </asp:DropDownList>
+                    </div>
+                    <div class="conitem2">
+                        <asp:TextBox ID="TextBox1" CssClass="conitem2txt" runat="server" Width="158px"></asp:TextBox>
+                    </div>
+                    <div class="conitem2">
+                        <img src="../Images/othermaster/search5.gif" />
+                    </div>
+                </div>--%>
+            </div>
+            <div id="rightpage">
+                <div class="righttitle">
+                    您现在位置：<asp:SiteMapPath ID="SiteMapPath1" runat="server">
+                    </asp:SiteMapPath>
+                </div>
+                <div class="contentDiv">
+                    <asp:ContentPlaceHolder ID="cphMain" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            <div id="footercontent">
+                <ul>
+                    <li><a href="#">关于我们</a></li>
+                    <li><a href="#">联系方式</a></li>
+                    <li><a href="#">加盟连锁</a></li>
+                    <li><a href="#">投诉建议</a></li>
+                    <li><a href="#">友情链接</a></li>
+                </ul>
+            </div>
+            <div id="bq">
+                版权所有 Copyright(C)2010-2020 好运来酒店
+            </div>
+        </div>
+        <div id="footerbottom">
+        </div>
+    </div>
+    </form>
+</body>
+</html>
